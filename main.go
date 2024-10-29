@@ -101,14 +101,20 @@ func main() {
 	// for key, value := range menu {
 	// 	fmt.Printf("%v: %v\n", key, value)
 	// }
-	name := "vishal"
-	m := &name
-	fmt.Println("before value of name is: ", name)
-	updateName(m)
-	fmt.Println("before value of name is: ", name)
+	// name := "vishal"
+	// m := &name
+	// fmt.Println("before value of name is: ", name)
+	// updateName(m)
+	// fmt.Println("before value of name is: ", name)
 	// fmt.Println("value of name is: ", name)
 	// fmt.Println("memory address of name is: ", &name)
 	// fmt.Println("m is: ", m)
 	// fmt.Println("de-referencing m is: ", *m)
+
+	myBill := newBill("Deepooo")
+	myBill.updateTip(9)
+	myBill.addItem("pastry", 24)
+
+	fmt.Println(myBill.format())
 
 }

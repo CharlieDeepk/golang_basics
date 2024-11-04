@@ -1,0 +1,7 @@
+deepak's Bill breakdown
+perk:                    ...Rs 10
+pie:                     ...Rs 4.99
+shake:                   ...Rs 9.99
+munch:                   ...Rs 5
+total:                   ...Rs 29.98
+tip:                     ...Rs 13.00

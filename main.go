@@ -1,46 +1,104 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"math"
+	"os"
+	"strconv"
 	"strings"
 )
 
-func sayGreeting(n string) {
-	fmt.Printf("Good Morning! %v\n", n)
-}
-func sayBye(n string) {
-	fmt.Printf("Good Bye! %v\n", n)
+// func sayGreeting(n string) {
+// 	fmt.Printf("Good Morning! %v\n", n)
+// }
+// func sayBye(n string) {
+// 	fmt.Printf("Good Bye! %v\n", n)
+// }
+
+// func cycleName(n []string, f func(string)) {
+// 	for _, value := range n {
+// 		f(value)
+// 	}
+// }
+
+// func areaOfCircle(r float64) float64 {
+// 	return math.Pi * r * r
+// }
+
+// func getInitials(n string) (string, string) {
+// 	s := strings.ToUpper(n)
+// 	names := strings.Split(s, " ")
+
+// 	var initials []string
+// 	for _, value := range names {
+// 		initials = append(initials, value[:1])
+// 	}
+
+// 	if len(initials) > 1 {
+// 		return initials[0], initials[1]
+// 	}
+// 	return initials[0], "_"
+
+// }
+
+// func updateName(n *string) {
+// 	*n = "deepak"
+// }
+
+func getInput(prompt string, reader *bufio.Reader) (string, error) {
+	fmt.Print(prompt)
+	input, err := reader.ReadString('\n')
+
+	return strings.TrimSpace(input), err
 }
 
-func cycleName(n []string, f func(string)) {
-	for _, value := range n {
-		f(value)
+func createBill() bill {
+	reader := bufio.NewReader(os.Stdin)
+
+	// fmt.Println("Enter name: ")
+	// name, _ := reader.ReadString('\n')
+	// name = strings.TrimSpace(name)
+	name, _ := getInput("enter name: ", reader)
+	instBill := newBill(name)
+
+	fmt.Printf("created bill for: %v\n", instBill.name)
+	return instBill
+}
+
+func promptOption(b bill) {
+	reader := bufio.NewReader(os.Stdin)
+	opt, _ := getInput("Choose option: (a - add item, s - save bill, t - add tip)", reader)
+	switch opt {
+	case "a":
+		name, _ := getInput("enter name of item: ", reader)
+		price, _ := getInput("enter price of item: ", reader)
+		p, err := strconv.ParseFloat(price, 64)
+		if err != nil {
+			fmt.Println("you entered wrong price")
+			promptOption(b)
+		}
+		b.addItem(name, p)
+		fmt.Println("added item ", name, price)
+		promptOption(b)
+	case "s":
+		b.save()
+		fmt.Println("saved bill for ", b.name)
+	case "t":
+		tip, _ := getInput("enter tip: ", reader)
+		t, err := strconv.ParseFloat(tip, 64)
+		if err != nil {
+			fmt.Println("you entered wrong tip")
+			promptOption(b)
+		}
+		b.updateTip(t)
+
+		fmt.Println("added tip ", tip)
+		promptOption(b)
+	default:
+		fmt.Println("you didn't chose the right thing")
+		promptOption(b)
+
 	}
-}
-
-func areaOfCircle(r float64) float64 {
-	return math.Pi * r * r
-}
-
-func getInitials(n string) (string, string) {
-	s := strings.ToUpper(n)
-	names := strings.Split(s, " ")
-
-	var initials []string
-	for _, value := range names {
-		initials = append(initials, value[:1])
-	}
-
-	if len(initials) > 1 {
-		return initials[0], initials[1]
-	}
-	return initials[0], "_"
-
-}
-
-func updateName(n *string) {
-	*n = "deepak"
 }
 
 func main() {
@@ -111,10 +169,14 @@ func main() {
 	// fmt.Println("m is: ", m)
 	// fmt.Println("de-referencing m is: ", *m)
 
-	myBill := newBill("Deepooo")
-	myBill.updateTip(9)
-	myBill.addItem("pastry", 24)
+	// myBill := newBill("Deepooo")
+	// myBill.updateTip(9)
+	// myBill.addItem("pastry", 24)
 
-	fmt.Println(myBill.format())
+	// fmt.Println(myBill.format())
+
+	myBill := createBill()
+	promptOption(myBill)
+	// fmt.Println(myBill.format())
 
 }
